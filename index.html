@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Web based modeler for Petriflow language">
+    <meta name="keywords" content="Petri Net, Petriflow, modeler, BPM">
+    <meta name="author" content="Gabriel Juhás, Ana Juhásová, Juraj Mažári, Milan Mladoniczky">
+    <title>Petriflow modeler</title>
+
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="node_modules/material-design-lite/material.min.css">
+    <link rel="stylesheet" type="text/css" href="src/css/main.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+
+    <!--Libs-->
+    <script src="node_modules/material-design-lite/material.min.js" type="text/javascript"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+
+    <!--JS ES6 scripts-->
+    <script src="src/js/classes.js" type="text/javascript"></script>
+    <script src="src/js/services.js" type="text/javascript"></script>
+    <script src="src/js/stores.js" type="text/javascript"></script>
+
+    <!--JS ES5 scripts-->
+    <script src="src/js/globals.js" type="text/javascript"></script>
+    <script src="src/js/utils.js" type="text/javascript"></script>
+    <script src="src/js/arcs.js" type="text/javascript"></script>
+    <script src="src/js/transitions.js" type="text/javascript"></script>
+    <script src="src/js/places.js" type="text/javascript"></script>
+    <script src="src/js/import.js" type="text/javascript"></script>
+    <script src="src/js/export.js" type="text/javascript"></script>
+    <script src="src/js/gui.js" type="text/javascript"></script>
+    <script src="src/js/main.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="control-panel">
+    <div class="button-wrapper">
+        <!--NETGRIF-->
+        <input type="button" name="netgrif" id="netgrif" class="button--input" value="NETGRIF" onclick="window.open('https://netgrif.com', '_blank')"/>
+        <label id="netgrifButton" for="netgrif"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/netgrif_logo.png" alt="netgrif_logo"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="netgrifButton">
+            NETGRIF s.r.o.
+            https://netgrif.com
+        </div>
+
+        <!--TRANSITION-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="transition"
+               value="transition"
+               checked="checked"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="transitionButton" for="transition"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/transition.svg" alt="transition"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="transitionButton">
+            Transition
+        </div>
+
+        <!--PLACE-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="place"
+               value="place"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="placeButton" for="place"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/place.svg" alt="place"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="placeButton">
+            Place
+        </div>
+
+        <!--STATIC PLACE-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="staticplace"
+               value="staticplace"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="staticPlaceButton" for="staticplace" title="static place"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/staticplace.svg" alt="staticplace"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="staticPlaceButton">
+            Static Place
+        </div>
+
+        <!--ADD TOKEN-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="addtoken"
+               value="addtoken"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="addTokenButton" for="addtoken" title="add tokens"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/addtokens.svg" alt="add tokens"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="addTokenButton">
+            Add Token
+        </div>
+
+        <!--REMOVE TOKEN-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="removetoken"
+               value="removetoken"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="removeTokenButton" for="removetoken" title="remove tokens"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/removetokens.svg" alt="removetokens"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="removeTokenButton">
+            Remove Token
+        </div>
+
+        <!--SET MARKING-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="marking"
+               value="marking"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="markingButton" for="marking" title="set marking"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/marking.svg" alt="marking"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="markingButton">
+            Change Marking
+        </div>
+
+        <!--SET LABEL-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="label"
+               value="label"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="labelButton" for="label" title="set label"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/label.svg" alt="label"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="labelButton">
+            Change Label
+        </div>
+
+        <!--ARC-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="arc"
+               value="arc"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="arcButton" for="arc"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/arc.svg" alt="arc"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="arcButton">
+            Arc
+        </div>
+
+        <!--ARC WEIGHT-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="arc_weight"
+               value="arc_weight"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="weightButton" for="arc_weight" title="arc weight"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/arcweight.svg" alt="arc weight"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="weightButton">
+            Arc Weight
+        </div>
+
+        <!--ARC DATA REF-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="arc_dataref"
+               value="arc_dataref"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="arcDatarefButton" for="arc_dataref" title="arc data reference"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/arcdataref.svg" alt="arc data reference"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="arcDatarefButton">
+            Arc Data Reference
+        </div>
+
+        <!--RESET ARC-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="resetarc"
+               value="resetarc"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="resetArcButton" for="resetarc" title="reset arc"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/resetarc.svg" alt="reset arc"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="resetArcButton">
+            Reset Arc
+        </div>
+
+        <!--INHIBITOR ARC-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="inhibitorarc"
+               value="inhibitorarc"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="inhibitorArcButton" for="inhibitorarc" title="inhibitor arc"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/inhibitor.svg" alt="inhibitor arc"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="inhibitorArcButton">
+            Inhibitor Arc
+        </div>
+
+        <!--READ ARC-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="readarc"
+               value="readarc"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="readArcButton" for="readarc" title="read arc"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/read.svg" alt="read arc"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="readArcButton">
+            Read Arc
+        </div>
+
+        <!--SET POSITION-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="position"
+               value="position"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="positionButton" for="position" title="position - x and y coordinates"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/position.svg" alt="position"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="positionButton">
+            Change Poistion
+        </div>
+
+        <!--DELETE-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="delete"
+               value="delete"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="deleteButton" for="delete"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/delete.svg" alt="delete"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="deleteButton">
+            Delete
+        </div>
+
+        <!--MOVE-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="move"
+               value="move"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="moveButton" for="move"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/move.svg" alt="move"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="moveButton">
+            Move
+        </div>
+
+        <!--START SIMULATION-->
+        <input type="radio"
+               name="sidePanelChoice"
+               id="fire"
+               value="fire"
+               onclick="reset()"
+               class="button--input"/>
+        <label id="fireButton" for="fire"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/fire.svg" alt="fire"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--bottom" data-mdl-for="fireButton">
+            Start Simulation
+        </div>
+    </div>
+</div>
+<div class="control-panel side-panel">
+    <div class="button-wrapper">
+        <!--UNDO-->
+        <input type="button" name="radSize" id="undo" class="button--input" value="Undo" onclick="undo()"/>
+        <label id="undoButton" for="undo"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/undo.svg" alt="undo"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="undoButton">
+            Undo last action.
+        </div>
+
+        <br>
+
+        <!--OPEN-->
+        <input type="file" id="otvorSubor" class="button--input" onchange="otvorFile(event)"/>
+        <label id="otvorSuborButton" for="otvorSubor"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/open.svg" alt="open"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="otvorSuborButton">
+            Choose a file to open.
+        </div>
+
+        <br>
+
+        <!--RELOAD-->
+        <input type="button" name="radSize" id="reload" class="button--input" value="Reload" onclick="reloadModel()"/>
+        <label id="reloadButton" for="reload"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/reload.svg" alt="reload"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="reloadButton">
+            Reload model from loaded file.
+        </div>
+
+        <br>
+
+        <!--SAVE AS XML-->
+        <input type="button" value="Save" id="saveasXML" class="button--input" onclick="exportasXML(1)"/>
+        <label id="saveasXMLButton" for="saveasXML"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/save.svg" alt="save"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="saveasXMLButton">
+            Save as an XML file.
+        </div>
+
+        <br>
+
+        <!--SAVE AS PFLOW-->
+        <input type="button" value="Export" id="saveasPFLOW" class="button--input" onclick="exportasXML(2)"/>
+        <label id="saveasPFLOWButton" for="saveasPFLOW" title="export pneditor format .pflow"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/exportpflow.svg" alt="export pflow"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="saveasPFLOWButton">
+            Export as an PFLOW XML file - format of the PNEditor.org (PNEditor also offers a possibility to export
+            and import files in PNML).
+        </div>
+
+        <br>
+
+        <!--SAVE AS SVG-->
+        <input type="button" value="SaveSVG" id="saveasSVG" class="button--input" onclick="exportasSVG()"/>
+        <label id="saveasSVGButton" for="saveasSVG" title="save as SVG"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/savesvg.svg" alt="save SVG"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="saveasSVGButton">
+            Export in SVG format.
+        </div>
+
+        <br>
+
+        <!--CLEAR-->
+        <input type="button" value="Clear" id="clear" class="button--input" onclick="clearmodel()"/>
+        <label id="clearButton" for="clear"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/clear.svg" alt="clear"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="clearButton">
+            Clear will delete the actual Petri net model, any unsaved changes will be lost
+        </div>
+
+        <br>
+
+        <!--SET DIMENSIONS-->
+        <input type="button" value="Dimension" id="dimension" class="button--input" onclick="setDimension()"/>
+        <label id="dimensionButton" for="dimension" title="set dimension"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/dimension.svg" alt="dimension"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="dimensionButton">
+            Enable to set the width and height of the drawing area.
+        </div>
+
+        <br>
+
+        <!--ALIGN ELEMENTS-->
+        <input type="button" value="Align" id="align" class="button--input" onclick="alignElements()"/>
+        <label id="alignButton" for="align"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/align.svg" alt="align"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="alignButton">
+            Align elements (places and transitions) into a grid.
+        </div>
+
+        <br>
+
+        <!--DATA VARIABLES-->
+        <input type="button" value="Datavariables" id="datavariables" class="button--input" onclick="datavariables()"/>
+        <label id="datavariablesButton" for="datavariables"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/data.svg" alt="data"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="datavariablesButton">
+            Show data variables.
+        </div>
+
+        <br>
+
+        <!--MODEL PROPERTIES-->
+        <input type="button" value="Properties" id="properties" class="button--input" onclick="propertiesM()"/>
+        <label id="propertiesButton" for="properties"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/properties.svg" alt="properties"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="propertiesButton">
+            Show the number of places, transitions, arcs and all elements together.
+        </div>
+
+        <br>
+
+        <!--ABOUT-->
+        <input type="button" value="About" id="about" class="button--input" onclick="about()"/>
+        <label id="aboutButton" for="about"
+               class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
+            <img class="button--image" src="img/icons/about.svg" alt="about"/>
+        </label>
+        <div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--right" data-mdl-for="aboutButton">
+            Click to see information about Petriflow.
+        </div>
+    </div>
+</div>
+
+<div id="canvas-wrapper" class="canvas-wrapper">
+    <svg id="canvas" class="canvas"></svg>
+</div>
+<div id="shade"></div>
+<div id="datadiv">
+    <nav class="mojeclose">
+
+        <input type="button" value="Close2" id="zavri2" onclick="zavri2()" class="button--input"/>
+        <label for="zavri2" title="close">
+            <img src="img/icons/close.svg" alt="close" class="button--image"/>
+        </label>
+        <div><h2 align='center'> Data Variables </h2></div>
+    </nav>
+    <nav class="mojebuttony">
+
+        <div id="wrapper">
+            <table align='center' id="data_table">
+                <tr>
+                    <th>Variable</th>
+                    <th>Value</th>
+                </tr>
+
+                <tr id="last_row">
+                    <td>
+                        <input type="text" id="new_variable">
+                    </td>
+                    <td>
+                        <input type="text" id="new_value">
+                    </td>
+                    <td>
+                        <input type="button" id="add_button" onclick="add_row();" value="Add Data Variable" class='button--input'>
+                        <label for="add_button" id="label_add" title="add variable"><img src="img/icons/add_data.svg" alt="add variable"/></label>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+        </div>
+    </nav>
+</div>
+
+
+</body>
+</html>

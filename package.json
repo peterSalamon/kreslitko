@@ -1,0 +1,24 @@
+{
+  "name": "petriflow-modeler",
+  "version": "1.0.0",
+  "description": "Modeler for Petriflow language",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://mladoniczky.milan@bitbucket.netgrif.com/scm/ng/modeler.git"
+  },
+  "keywords": [
+    "Petriflow",
+    "Netgrif",
+    "PetriNet"
+  ],
+  "author": "Gabriel Juhás <juhas@netgrif.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "material-design-lite": "^1.3.0"
+  }
+}
