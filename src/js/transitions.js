@@ -81,11 +81,11 @@ function novy_svg_transition(element, canvas, xmlns, x, y, velkost) {
             else {
                 if (source_hrany.type !== element.type) {
                     var actual = arcs.length;
-                    arcs[actual] = new Arc(source_hrany, element, "regular");
+                    arcs[actual] = new Arc(source_hrany, element, "regular", canvas);
                     var elem = arcs[actual].svgelement1;
 
-                    elementypredhrany();
-                    labelypredhranyprve();
+                    elementypredhrany(canvas);
+                    labelypredhranyprve(canvas);
                 }
             }
         }
@@ -94,11 +94,11 @@ function novy_svg_transition(element, canvas, xmlns, x, y, velkost) {
             if (kresli_sa_hrana !== 0) {
                 if (source_hrany.type !== element.type) {
                     var actual = arcs.length;
-                    arcs[actual] = new Arc(source_hrany, element, "reset");
+                    arcs[actual] = new Arc(source_hrany, element, "reset", canvas);
                     var elem = arcs[actual].svgelement1;
 
-                    elementypredhrany();
-                    labelypredhranyprve();
+                    elementypredhrany(canvas);
+                    labelypredhranyprve(canvas);
                 }
             }
         }
@@ -107,11 +107,11 @@ function novy_svg_transition(element, canvas, xmlns, x, y, velkost) {
             if (kresli_sa_hrana !== 0) {
                 if (source_hrany.type !== element.type) {
                     var actual = arcs.length;
-                    arcs[actual] = new Arc(source_hrany, element, "inhibitor");
+                    arcs[actual] = new Arc(source_hrany, element, "inhibitor", canvas);
                     var elem = arcs[actual].svgelement1;
 
-                    elementypredhrany();
-                    labelypredhranyprve();
+                    elementypredhrany(canvas);
+                    labelypredhranyprve(canvas);
                 }
             }
         }
@@ -120,11 +120,11 @@ function novy_svg_transition(element, canvas, xmlns, x, y, velkost) {
             if (kresli_sa_hrana !== 0) {
                 if (source_hrany.type !== element.type) {
                     var actual = arcs.length;
-                    arcs[actual] = new Arc(source_hrany, element, "read");
+                    arcs[actual] = new Arc(source_hrany, element, "read", canvas);
                     var elem = arcs[actual].svgelement1;
 
-                    elementypredhrany();
-                    labelypredhranyprve();
+                    elementypredhrany(canvas);
+                    labelypredhranyprve(canvas);
                 }
             }
         }
@@ -258,7 +258,7 @@ function moveprechod(prechod, x, y) {
     }
 }
 
-function Transition(x, y) {
+function Transition(x, y, canvas) {
     this.type = "transition";
     this.id = attachid();
     this.index = 0;

@@ -116,7 +116,7 @@ function nacitajxml(xmlDoc) {
 
         xx = korekcia_max_x(xx);
         yy = korekcia_max_y(yy);
-        transitions[i] = new Transition(xx, yy);
+        transitions[i] = new Transition(xx, yy, canvas);
 
 
         transitions[i].id = parseInt(xmltransitions[i].getElementsByTagName("id")[0].childNodes[0].nodeValue);

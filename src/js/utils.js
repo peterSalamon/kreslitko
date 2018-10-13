@@ -29,7 +29,7 @@ function doMouseMove(event) {
 
     if (kresli_sa_hrana === 1 && (document.getElementById("arc").checked || document.getElementById("resetarc").checked || document.getElementById("inhibitorarc").checked || document.getElementById("readarc").checked)) {
         if (source_hrany.type === "place") posun = polomer + 2; else posun = velkost / 2 + 2;
-        if (Math.abs(source_hrany.x - mys_x) > posun || Math.abs(source_hrany.y - mys_y) > posun) {
+        if (Math.abs(source_hrany.x - mys_x) > posun || Math.abs(source_hrany.y - mys_y) > posun ) {
             if (source_hrany.x > mys_x) {
                 mys_x = mys_x + 2;
             }
@@ -116,7 +116,7 @@ function korekcia_max_y(y) {
     return yy;
 }
 
-function doMouseDown(event) {
+function doMouseDown(event, canvas) {
     var mys_x = getMousePositionX(event);
     var mys_y = getMousePositionY(event);
 
@@ -177,19 +177,19 @@ function doMouseDown(event) {
     if (document.getElementById("transition").checked) {
         previousStatus = generujXML(1);
         var actual = transitions.length;
-        transitions[actual] = new Transition(mys_x, mys_y);
+        transitions[actual] = new Transition(mys_x, mys_y, canvas);
     }
 
     if (document.getElementById("place").checked) {
         previousStatus = generujXML(1);
         var places_actual = places.length;
-        places[places_actual] = new Place(mys_x, mys_y, false);
+        places[places_actual] = new Place(mys_x, mys_y, false, canvas);
     }
 
     if (document.getElementById("staticplace").checked) {
         previousStatus = generujXML(1);
         var places_actual = places.length;
-        places[places_actual] = new Place(mys_x, mys_y, true);
+        places[places_actual] = new Place(mys_x, mys_y, true, canvas);
     }
 }
 

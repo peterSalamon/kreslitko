@@ -3,8 +3,14 @@
 $(document).ready(() => {
     app = new Application("canvas");
 
-    app.canvas.on("mousedown", doMouseDown);
+    app.canvas.on("mousedown", function(){
+        doMouseDown(event, app.canvas);
+    });
+
+
+
     app.canvas.on("mousemove", doMouseMove);
+
     app.canvas.resize(appwidth, appheight);
 
     app.$service().register("id", IdentificationService);

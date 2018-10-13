@@ -153,7 +153,7 @@ function novy_svg_place(element, canvas, xmlns, x, y, polomer) {
 
     canvas.add(svgelement);
 
-    tokeny(element);
+    tokeny(element, canvas);
 
     var svgzamenom = document.createElementNS(xmlns, "rect");
 
@@ -202,7 +202,7 @@ function novy_svg_place(element, canvas, xmlns, x, y, polomer) {
         element.over = 0;
     };
     svgelement.onmousedown = function () {
-        onplacedown(element, svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom)
+        onplacedown(element, canvas, svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom)
     };
 
     for (let i = 0; i < element.markingtokens.length; i++) {
@@ -215,12 +215,12 @@ function novy_svg_place(element, canvas, xmlns, x, y, polomer) {
             element.over = 0;
         };
         element.markingtokens[i].onmousedown = function () {
-            onplacedown(element, svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom)
+            onplacedown(element,canvas,  svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom)
         };
     }
 
     svgmarking.onmousedown = function () {
-        onplacedown(element, svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom)
+        onplacedown(element, canvas, svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom)
     };
     svgmarking.onmouseover = function () {
         svgelement.setAttributeNS(null, "stroke", "blue");
@@ -254,7 +254,7 @@ function novy_svg_place(element, canvas, xmlns, x, y, polomer) {
     return new objektymiesta(svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom);
 }
 
-function onplacedown(element, svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom) {
+function onplacedown(element,canvas, svgelement, svgmeno, labelnode, svgmarking, markingnode, svgzamenom) {
     if (document.getElementById("delete").checked) {
         previousStatus = generujXML(1);
         for (let i = 0; i < arcs.length; i++) {
@@ -294,10 +294,10 @@ function onplacedown(element, svgelement, svgmeno, labelnode, svgmarking, markin
         else {
             if (source_hrany.type !== element.type) {
                 var actual = arcs.length;
-                arcs[actual] = new Arc(source_hrany, element, "regular");
+                arcs[actual] = new Arc(source_hrany, element, "regular", canvas);
                 var elem = arcs[actual].svgelement1;
-                elementypredhrany();
-                labelypredhranyprve();
+                elementypredhrany(canvas);
+                labelypredhranyprve(canvas);
             }
         }
     }
@@ -440,7 +440,7 @@ function movemiesto(miesto, x, y) {
     }
 }
 
-function Place(x, y, isStatic, id) {
+function Place(x, y, isStatic, canvas, id) {
     this.type = "place";
     this.static = isStatic;
     this.id = !id ? attachid() : id;
@@ -490,7 +490,7 @@ function updatepositionmarking(place) {
     place.markingtokens[8].setAttributeNS(null, "cy", y + tokenposuv);
 }
 
-function tokeny(place) {
+function tokeny(place, canvas) {
     var x = place.x;
     var y = place.y;
 

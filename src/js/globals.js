@@ -4,7 +4,7 @@ var previousStatus;
 var originFile;
 var xmlns = "http://www.w3.org/2000/svg";
 var hranabymove;
-var canvas; //TODO refactor to app.canvas
+// var canvas;
 var transitions = [];
 var places = [];
 var arcs = [];

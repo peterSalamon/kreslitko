@@ -1,4 +1,4 @@
-function elementypredhrany() {
+function elementypredhrany(canvas) {
     for (let i = 0; i < places.length; i++) {
         canvas.add(places[i].objektymiesta.element);
 
@@ -525,7 +525,7 @@ function updatehranusvg(hrana) {
     hrana.objektyhrany.vahaelem.setAttributeNS(null, "y", `${bodvaha.y + vahaoffset / 2}`);
 }
 
-function Arc(source, target, arctype) {
+function Arc(source, target, arctype, canvas) {
     this.type = "arc";
     this.arctype = arctype;
     this.id = attachid();
@@ -744,7 +744,7 @@ function reset_hranu() {
     }
 }
 
-function labelypredhranyprve() {
+function labelypredhranyprve(canvas) {
     for (let i = 0; i < places.length; i++) {
         canvas.add(places[i].objektymiesta.zamenom);
         canvas.add(places[i].objektymiesta.menoelem);
