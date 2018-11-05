@@ -17,7 +17,7 @@ function elementypredhrany(canvas) {
         places[i].objektymiesta.svgmarking.appendChild(places[i].objektymiesta.markingnode);
         canvas.add(places[i].objektymiesta.svgmarking);
     }
-    updatemarkings();
+    Place.updatemarkings();
     for (let i = 0; i < transitions.length; i++) {
         canvas.add(transitions[i].objektyelementu.element);
         transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "black");
@@ -283,7 +283,7 @@ function mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, la
         for (let i = 1; i < element.bodyhrany.length - 1; i++) {
             if (Math.abs(element.bodyhrany[i].x - novy_bod.x) <= 5 && Math.abs(element.bodyhrany[i].y - novy_bod.y) <= 5) {
                 element.bodyhrany.splice(i, 1);
-                updatehranusvg(element);
+                element.updatehranusvg(element);
                 deletujembod = 1;
                 break;
             }
@@ -344,7 +344,7 @@ function mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, la
                 if (doit) {
                     element.bodyhrany[i].x = novex;
                     element.bodyhrany[i].y = novey;
-                    updatehranusvg(element);
+                    element.updatehranusvg(element);
                 }
                 break;
             }
@@ -365,7 +365,7 @@ function mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, la
                     indexbodu = i;
                     posuvanahrana = element;
                     posuva_sa_hrana = 1;
-                    updatehranusvg(element);
+                    element.updatehranusvg(element);
                     break;
                 }
             }
@@ -387,7 +387,7 @@ function mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, la
                         indexbodu = i + 1;
                         posuvanahrana = element;
                         posuva_sa_hrana = 1;
-                        updatehranusvg(element);
+                        element.updatehranusvg(element);
                         break;
                     }
                 }
@@ -425,19 +425,19 @@ function mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, la
     }
 }
 
-function objektyhrany(a, b, c, d, e) {
-    this.polyciarapod = a;
-    this.polyciara = b;
-    this.sipka = c;
-    this.vahaelem = d;
-    this.vaha = e;
-}
+// function objektyhrany(a, b, c, d, e) {
+//     this.polyciarapod = a;
+//     this.polyciara = b;
+//     this.sipka = c;
+//     this.vahaelem = d;
+//     this.vaha = e;
+// }
 
-function objektyhranymove(a, b, arctype) {
-    this.polyciara = a;
-    this.sipka = b;
-    this.arctype = arctype;
-}
+// function objektyhranymove(a, b, arctype) {
+//     this.polyciara = a;
+//     this.sipka = b;
+//     this.arctype = arctype;
+// }
 
 function prvebodyhrany(source, target) {
     let polebodov = [];
@@ -700,49 +700,7 @@ function koniec_hrany(startElement, endElement) {
     }
 }
 
-function reset() {
-    reset_hranu();
 
-    if (document.getElementById("fire").checked) {
-        for (let i = 0; i < transitions.length; i++) {
-            if (enabled(transitions[i])) {
-                transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "green");
-                transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "yellowgreen");
-            }
-            else {
-                transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "red");
-            }
-        }
-    }
-    if (!document.getElementById("fire").checked) {
-        for (let i = 0; i < transitions.length; i++) {
-            transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "black");
-            transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "white");
-        }
-    }
-}
-
-function reset_hranu() {
-    if (posuva_sa_hrana === 1) {
-        posuvanahrana.objektyhrany.polyciara.setAttributeNS(null, "stroke", "black");
-        if (posuvanahrana.arctype === "inhibitor")
-            posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "fill", "white");
-        else
-            posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "fill", "black");
-
-        posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "stroke", "black");
-
-        pocetmousedownposuv = 0;
-        posuva_sa_hrana = 0;
-    }
-    if (kresli_sa_hrana === 1) {
-        canvas.remove(hranabymove.polyciara);
-        canvas.remove(hranabymove.sipka);
-
-        pocetmousedown = 0;
-        kresli_sa_hrana = 0;
-    }
-}
 
 function labelypredhranyprve(canvas) {
     for (let i = 0; i < places.length; i++) {

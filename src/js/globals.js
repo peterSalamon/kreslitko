@@ -35,6 +35,7 @@ var hybesamiesto = 0;
 var movedprechod;
 var movedmiesto;
 var id = 0;
+var indexbodu = 0;
 
 var text = "";
 var menofilu = "newmodel.xml";

@@ -14,73 +14,7 @@ function clearmodel() { //TODO move to ModelStore
     }
 }
 
-function setDimension() { //TODO move to Canvas - to resize method - if no args where provided ask a user for dimensions
-    var doit = false;
-    var a = prompt("Please enter width (min width is " + minwidth + ", max width is " + maxwidth + "):", appwidth);
-    if (a != null) {
-        var x = parseInt(a);
-        if (isNaN(x)) {
-            alert("x is not a number");
-        } else {
-            if (x < minwidth || maxwidth < x) //|| y < minheight || maxheight < y
-                alert("x is out of dimension");
-            else {
-                appwidth = x;
-                doit = true;
-            }
-        }
-    }
-    var b = prompt("Please enter height (min height is " + minheight + ", max height is " + maxheight + ":", appheight);
-    if (b != null) {
-        var y = parseInt(b);
-        if (isNaN(y)) {
-            alert("y is not a number");
-        } else {
-            if (y < minheight || maxheight < y)
-                alert("y is out of dimension");
-            else {
-                appheight = y;
-                doit = true;
-            }
-        }
-    }
 
-
-    if (doit)
-        canvas.resize(appwidth, appheight);
-}
-
-function alignElements() { //TODO move to Canvas
-    for (var i = 0; i < transitions.length; i++) {
-        var x = transitions[i].x;
-        x = korekcia_x((parseInt(x / gridstep)) * gridstep + gridstep / 2);
-        var y = transitions[i].y;
-        y = korekcia_y((parseInt(y / gridstep)) * gridstep + gridstep / 2);
-        moveprechod(transitions[i], x, y);
-        transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "black");
-    }
-
-    for (var i = 0; i < places.length; i++) {
-        var x = places[i].x;
-        x = korekcia_x((parseInt(x / gridstep)) * gridstep + gridstep / 2);
-        var y = places[i].y;
-        y = korekcia_y((parseInt(y / gridstep)) * gridstep + gridstep / 2);
-        movemiesto(places[i], x, y);
-        places[i].objektymiesta.element.setAttributeNS(null, "stroke", "black");
-    }
-
-    for (var i = 0; i < arcs.length; i++) {
-        for (var j = 1; j < arcs[i].bodyhrany.length - 1; j++) {
-            var x = arcs[i].bodyhrany[j].x;
-            arcs[i].bodyhrany[j].x = korekcia_x((parseInt(x / gridstep)) * gridstep + gridstep / 2);
-            var y = arcs[i].bodyhrany[j].y;
-            arcs[i].bodyhrany[j].y = korekcia_y((parseInt(y / gridstep)) * gridstep + gridstep / 2);
-        }
-        updatehranusvg(arcs[i]);
-    }
-
-    reset();
-}
 
 //TODO do something about these messages :(
 function propertiesM() {

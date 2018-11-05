@@ -7,8 +7,6 @@ $(document).ready(() => {
         doMouseDown(event, app.canvas);
     });
 
-
-
     app.canvas.on("mousemove", doMouseMove);
 
     app.canvas.resize(appwidth, appheight);

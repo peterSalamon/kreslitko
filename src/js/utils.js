@@ -50,17 +50,17 @@ function doMouseMove(event) {
             var pomer = dlzkaskratena / dlzkahrany;
             var nx = source_hrany.x + dx * pomer;
             var ny = source_hrany.y + dy * pomer;
-            var start = zaciatok_hrany(source_hrany, koniech);
+            var start = Arc.zaciatok_hrany(source_hrany, koniech);
         }
 
         // TODO: Uncaught TypeError: Cannot read property 'x' of undefined
         hranabymove.polyciara.setAttributeNS(null, "points", start.x + "," + start.y + " " + nx + "," + ny);
 
         if (document.getElementById("inhibitorarc").checked || document.getElementById("readarc").checked) {
-            hranabymove.sipka.setAttributeNS(null, "cx", bodInhibitorSipky(start.x, start.y, mys_x, mys_y).x);
-            hranabymove.sipka.setAttributeNS(null, "cy", bodInhibitorSipky(start.x, start.y, mys_x, mys_y).y);
+            hranabymove.sipka.setAttributeNS(null, "cx", Arc.bodInhibitorSipky(start.x, start.y, mys_x, mys_y).x);
+            hranabymove.sipka.setAttributeNS(null, "cy", Arc.bodInhibitorSipky(start.x, start.y, mys_x, mys_y).y);
         } else {
-            hranabymove.sipka.setAttributeNS(null, "points", bodySipky(start.x, start.y, mys_x, mys_y, hranabymove.arctype));
+            hranabymove.sipka.setAttributeNS(null, "points", Arc.bodySipky(start.x, start.y, mys_x, mys_y, hranabymove.arctype));
         }
 
     }
@@ -68,14 +68,14 @@ function doMouseMove(event) {
         posuvanahrana.bodyhrany[indexbodu].x = mys_x;
         posuvanahrana.bodyhrany[indexbodu].y = mys_y;
 
-        updatehranusvg(posuvanahrana);
+        Arc.updatehranusvg(posuvanahrana);
     }
 
     if (hybesaprechod === 1 && document.getElementById("move").checked)
-        moveprechod(movedprechod, mys_x, mys_y);
+        Transition.moveprechod(movedprechod, mys_x, mys_y);
 
     if (hybesamiesto === 1 && document.getElementById("move").checked)
-        movemiesto(movedmiesto, mys_x, mys_y);
+        Place.movemiesto(movedmiesto, mys_x, mys_y);
 }
 
 function korekcia_x(x) {
@@ -145,7 +145,7 @@ function doMouseDown(event, canvas) {
         posuvanahrana.bodyhrany[indexbodu].y = mys_y;
         pocetmousedownposuv = 0;
         posuva_sa_hrana = 0;
-        updatehranusvg(posuvanahrana);
+        Arc.updatehranusvg(posuvanahrana);
     }
     if (hybesaprechod === 1) {
         pocetmousedownposuvtran++;
@@ -156,7 +156,7 @@ function doMouseDown(event, canvas) {
     if (pocetmousedownposuvtran === 2 && hybesaprechod === 1) {
         pocetmousedownposuvtran = 0;
         hybesaprechod = 0;
-        moveprechod(movedprechod, mys_x, mys_y);
+        Transition.moveprechod(movedprechod, mys_x, mys_y);
         movedprechod.objektyelementu.element.setAttributeNS(null, "stroke", "blue");
     }
 
@@ -169,7 +169,7 @@ function doMouseDown(event, canvas) {
     if (pocetmousedownposuvplace === 2 && hybesamiesto === 1) {
         pocetmousedownposuvplace = 0;
         hybesamiesto = 0;
-        movemiesto(movedmiesto, mys_x, mys_y);
+        Place.movemiesto(movedmiesto, mys_x, mys_y);
         movedmiesto.objektymiesta.element.setAttributeNS(null, "stroke", "blue");
     }
 
@@ -236,5 +236,63 @@ function deleteall() {
     }
     places.splice(0, places.length);
 
-    id = 0;
+id = 0;
+}
+
+function objektyhranymove(a, b, arctype) {
+    this.polyciara = a;
+    this.sipka = b;
+    this.arctype = arctype;
+}
+
+function objektyhrany(a, b, c, d, e) {
+    this.polyciarapod = a;
+    this.polyciara = b;
+    this.sipka = c;
+    this.vahaelem = d;
+    this.vaha = e;
+}
+
+function reset() {
+    reset_hranu();
+
+    if (document.getElementById("fire").checked) {
+        for (let i = 0; i < transitions.length; i++) {
+            if (Transition.enabled(transitions[i])) {
+                transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "green");
+                transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "yellowgreen");
+            }
+            else {
+                transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "red");
+            }
+        }
+    }
+    if (!document.getElementById("fire").checked) {
+        for (let i = 0; i < transitions.length; i++) {
+            transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "black");
+            transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "white");
+        }
+    }
+}
+
+function reset_hranu() {
+    if (posuva_sa_hrana === 1) {
+        posuvanahrana.objektyhrany.polyciara.setAttributeNS(null, "stroke", "black");
+        if (posuvanahrana.arctype === "inhibitor")
+            posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "fill", "white");
+        else
+            posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "fill", "black");
+
+        posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "stroke", "black");
+
+        pocetmousedownposuv = 0;
+        posuva_sa_hrana = 0;
+    }
+    if (kresli_sa_hrana === 1) {
+        canvas.remove(hranabymove.polyciara);
+        canvas.remove(hranabymove.sipka);
+
+        pocetmousedown = 0;
+        kresli_sa_hrana = 0;
+    }
 }
