@@ -51,18 +51,17 @@ function doMouseMove(event) {
             var nx = source_hrany.x + dx * pomer;
             var ny = source_hrany.y + dy * pomer;
             var start = Arc.zaciatok_hrany(source_hrany, koniech);
+
+            hranabymove.polyciara.setAttributeNS(null, "points", start.x + "," + start.y + " " + nx + "," + ny);
+
+            if (document.getElementById("inhibitorarc").checked || document.getElementById("readarc").checked) {
+                hranabymove.sipka.setAttributeNS(null, "cx", Arc.bodInhibitorSipky(start.x, start.y, mys_x, mys_y).x);
+                hranabymove.sipka.setAttributeNS(null, "cy", Arc.bodInhibitorSipky(start.x, start.y, mys_x, mys_y).y);
+            } else {
+                hranabymove.sipka.setAttributeNS(null, "points", Arc.bodySipky(start.x, start.y, mys_x, mys_y, hranabymove.arctype));
+            }
+
         }
-
-        // TODO: Uncaught TypeError: Cannot read property 'x' of undefined
-        hranabymove.polyciara.setAttributeNS(null, "points", start.x + "," + start.y + " " + nx + "," + ny);
-
-        if (document.getElementById("inhibitorarc").checked || document.getElementById("readarc").checked) {
-            hranabymove.sipka.setAttributeNS(null, "cx", Arc.bodInhibitorSipky(start.x, start.y, mys_x, mys_y).x);
-            hranabymove.sipka.setAttributeNS(null, "cy", Arc.bodInhibitorSipky(start.x, start.y, mys_x, mys_y).y);
-        } else {
-            hranabymove.sipka.setAttributeNS(null, "points", Arc.bodySipky(start.x, start.y, mys_x, mys_y, hranabymove.arctype));
-        }
-
     }
     if (posuva_sa_hrana === 1 && document.getElementById("move").checked) {
         posuvanahrana.bodyhrany[indexbodu].x = mys_x;
