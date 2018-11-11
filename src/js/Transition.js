@@ -175,7 +175,7 @@ class Transition {
                     }
                 }
                 if (doit)
-                    element.moveprechod(element, novex, novey);
+                    Transition.moveprechod(element, novex, novey);
             }
 
             if (document.getElementById("move").checked) {

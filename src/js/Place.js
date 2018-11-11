@@ -409,7 +409,7 @@ class Place {
             }
 
             if (doit)
-                element.movemiesto(element, novex, novey);
+                Place.movemiesto(element, novex, novey);
         }
 
         if (document.getElementById("move").checked) {
