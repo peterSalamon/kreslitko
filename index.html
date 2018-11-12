@@ -26,24 +26,16 @@
     <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
 
     <!--JS ES6 scripts-->
-    <!--<script src="src/js/classes.js" type="text/javascript"></script>-->
+    <script src="src/js/classes.js" type="text/javascript"></script>
     <script src="src/js/services.js" type="text/javascript"></script>
     <script src="src/js/stores.js" type="text/javascript"></script>
-    <script src="src/js/Transition.js" type="text/javascript"></script>
-    <script src="src/js/Place.js" type="text/javascript"></script>
-    <script src="src/js/ObjektyMiesta.js" type="text/javascript"></script>
-    <script src="src/js/Arc.js" type="text/javascript"></script>
-    <script src="src/js/Canvas.js" type="text/javascript"></script>
-    <script src="src/js/Application.js" type="text/javascript"></script>
-    <script src="src/js/Model.js" type="text/javascript"></script>
-    <script src="src/js/Point.js" type="text/javascript"></script>
 
     <!--JS ES5 scripts-->
     <script src="src/js/globals.js" type="text/javascript"></script>
     <script src="src/js/utils.js" type="text/javascript"></script>
-    <!--<script src="src/js/arcs.js" type="text/javascript"></script>-->
-    <!--<script src="src/js/transitions.js" type="text/javascript"></script>-->
-    <!--<script src="src/js/places.js" type="text/javascript"></script>-->
+    <script src="src/js/arcs.js" type="text/javascript"></script>
+    <script src="src/js/transitions.js" type="text/javascript"></script>
+    <script src="src/js/places.js" type="text/javascript"></script>
     <script src="src/js/import.js" type="text/javascript"></script>
     <script src="src/js/export.js" type="text/javascript"></script>
     <script src="src/js/gui.js" type="text/javascript"></script>
@@ -53,7 +45,7 @@
 <div class="control-panel">
     <div class="button-wrapper">
         <!--NETGRIF-->
-        <input type="button" name="netgrif" id="netgrif" class="button--input" value="NETGRIF" onclick="window.open('https://netgrif.com', '_blank')"/>
+        <input type="button" name="netgrif" id="netgrif" class="button--input button--reset" value="NETGRIF" onclick="window.open('https://netgrif.com', '_blank')"/>
         <label id="netgrifButton" for="netgrif"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/netgrif_logo.png" alt="netgrif_logo"/>
@@ -69,8 +61,7 @@
                id="transition"
                value="transition"
                checked="checked"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="transitionButton" for="transition"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/transition.svg" alt="transition"/>
@@ -84,8 +75,7 @@
                name="sidePanelChoice"
                id="place"
                value="place"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="placeButton" for="place"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/place.svg" alt="place"/>
@@ -99,8 +89,7 @@
                name="sidePanelChoice"
                id="staticplace"
                value="staticplace"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="staticPlaceButton" for="staticplace" title="static place"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/staticplace.svg" alt="staticplace"/>
@@ -114,8 +103,7 @@
                name="sidePanelChoice"
                id="addtoken"
                value="addtoken"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="addTokenButton" for="addtoken" title="add tokens"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/addtokens.svg" alt="add tokens"/>
@@ -129,8 +117,7 @@
                name="sidePanelChoice"
                id="removetoken"
                value="removetoken"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="removeTokenButton" for="removetoken" title="remove tokens"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/removetokens.svg" alt="removetokens"/>
@@ -144,8 +131,7 @@
                name="sidePanelChoice"
                id="marking"
                value="marking"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="markingButton" for="marking" title="set marking"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/marking.svg" alt="marking"/>
@@ -159,8 +145,7 @@
                name="sidePanelChoice"
                id="label"
                value="label"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="labelButton" for="label" title="set label"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/label.svg" alt="label"/>
@@ -174,8 +159,7 @@
                name="sidePanelChoice"
                id="arc"
                value="arc"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="arcButton" for="arc"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/arc.svg" alt="arc"/>
@@ -189,8 +173,7 @@
                name="sidePanelChoice"
                id="arc_weight"
                value="arc_weight"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="weightButton" for="arc_weight" title="arc weight"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/arcweight.svg" alt="arc weight"/>
@@ -204,8 +187,7 @@
                name="sidePanelChoice"
                id="arc_dataref"
                value="arc_dataref"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="arcDatarefButton" for="arc_dataref" title="arc data reference"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/arcdataref.svg" alt="arc data reference"/>
@@ -219,8 +201,7 @@
                name="sidePanelChoice"
                id="resetarc"
                value="resetarc"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="resetArcButton" for="resetarc" title="reset arc"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/resetarc.svg" alt="reset arc"/>
@@ -234,8 +215,7 @@
                name="sidePanelChoice"
                id="inhibitorarc"
                value="inhibitorarc"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="inhibitorArcButton" for="inhibitorarc" title="inhibitor arc"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/inhibitor.svg" alt="inhibitor arc"/>
@@ -249,8 +229,7 @@
                name="sidePanelChoice"
                id="readarc"
                value="readarc"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="readArcButton" for="readarc" title="read arc"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/read.svg" alt="read arc"/>
@@ -264,8 +243,7 @@
                name="sidePanelChoice"
                id="position"
                value="position"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="positionButton" for="position" title="position - x and y coordinates"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/position.svg" alt="position"/>
@@ -279,8 +257,7 @@
                name="sidePanelChoice"
                id="delete"
                value="delete"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="deleteButton" for="delete"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/delete.svg" alt="delete"/>
@@ -294,8 +271,7 @@
                name="sidePanelChoice"
                id="move"
                value="move"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="moveButton" for="move"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/move.svg" alt="move"/>
@@ -309,8 +285,7 @@
                name="sidePanelChoice"
                id="fire"
                value="fire"
-               onclick="reset()"
-               class="button--input"/>
+               class="button--input button--reset"/>
         <label id="fireButton" for="fire"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/fire.svg" alt="fire"/>
@@ -335,7 +310,7 @@
         <br>
 
         <!--OPEN-->
-        <input type="file" id="otvorSubor" class="button--input" />
+        <input type="file" id="otvorSubor" class="button--input"/>
         <label id="otvorSuborButton" for="otvorSubor"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/open.svg" alt="open"/>
@@ -359,7 +334,7 @@
         <br>
 
         <!--SAVE AS XML-->
-        <input type="button" value="Save" id="saveasXML" class="button--input" onclick="exportasXML(1)"/>
+        <input type="button" value="Save" id="saveasXML" class="button--input"/>
         <label id="saveasXMLButton" for="saveasXML"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/save.svg" alt="save"/>
@@ -371,7 +346,7 @@
         <br>
 
         <!--SAVE AS PFLOW-->
-        <input type="button" value="Export" id="saveasPFLOW" class="button--input" onclick="exportasXML(2)"/>
+        <input type="button" value="Export" id="saveasPFLOW" class="button--input"/>
         <label id="saveasPFLOWButton" for="saveasPFLOW" title="export pneditor format .pflow"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/exportpflow.svg" alt="export pflow"/>
@@ -408,7 +383,7 @@
         <br>
 
         <!--SET DIMENSIONS-->
-        <input type="button" value="Dimension" id="dimension" class="button--input" />
+        <input type="button" value="Dimension" id="dimension" class="button--input"/>
         <label id="dimensionButton" for="dimension" title="set dimension"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/dimension.svg" alt="dimension"/>
@@ -420,7 +395,7 @@
         <br>
 
         <!--ALIGN ELEMENTS-->
-        <input type="button" value="Align" id="align" class="button--input" />
+        <input type="button" value="Align" id="align" class="button--input"/>
         <label id="alignButton" for="align"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/align.svg" alt="align"/>
@@ -432,7 +407,7 @@
         <br>
 
         <!--DATA VARIABLES-->
-        <input type="button" value="Datavariables" id="datavariables" class="button--input" onclick="datavariables()"/>
+        <input type="button" value="Datavariables" id="datavariables" class="button--input"/>
         <label id="datavariablesButton" for="datavariables"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/data.svg" alt="data"/>
@@ -444,7 +419,7 @@
         <br>
 
         <!--MODEL PROPERTIES-->
-        <input type="button" value="Properties" id="properties" class="button--input" onclick="propertiesM()"/>
+        <input type="button" value="Properties" id="properties" class="button--input"/>
         <label id="propertiesButton" for="properties"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/properties.svg" alt="properties"/>
@@ -456,7 +431,7 @@
         <br>
 
         <!--ABOUT-->
-        <input type="button" value="About" id="about" class="button--input" onclick="about()"/>
+        <input type="button" value="About" id="about" class="button--input"/>
         <label id="aboutButton" for="about"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/about.svg" alt="about"/>

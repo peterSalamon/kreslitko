@@ -1,6 +1,5 @@
-class Transition {
-
-    constructor(x, y, canvas) {
+class Transition{
+    constructor (x, y, canvas, app) {
         this.type = "transition";
         this.id = attachid();
         this.index = 0;
@@ -9,10 +8,14 @@ class Transition {
         this.velkost = velkost;
         this.label = "";
         this.over = 1;
-        this.objektyelementu = this.novy_svg_transition(this, canvas, xmlns, x, y, this.velkost);
+        this.objektyelementu = this.novy_svg_transition(this, app, xmlns, x, y, this.velkost);
     }
 
-    novy_svg_transition(element, canvas, xmlns, x, y, velkost) {
+    novy_svg_transition(element, app, xmlns, x, y, velkost) {
+        let objectStore = app.$store("model").get(0);     //TODO: ok ?
+
+        let canvas = app.canvas;
+
         var svgelement = document.createElementNS(xmlns, "rect");
 
         svgelement.setAttributeNS(null, "x", x - velkost / 2);
@@ -33,6 +36,7 @@ class Transition {
         svgzamenom.setAttributeNS(null, "fill-opacity", "0.7");
         svgzamenom.setAttributeNS(null, "fill", "white");
         canvas.add(svgzamenom);
+
 
         var svgmeno = document.createElementNS(xmlns, "text");
         svgmeno.setAttributeNS(null, "x", x);
@@ -62,15 +66,16 @@ class Transition {
             }
         };
         svgelement.onmousedown = function () {
+            var bod = new Point(0,0);
             if (document.getElementById("delete").checked) {
-                for (let i = 0; i < arcs.length; i++) {
-                    if (element === arcs[i].source || element === arcs[i].target) {
-                        canvas.remove(arcs[i].objektyhrany.polyciarapod);
-                        canvas.remove(arcs[i].objektyhrany.polyciara);
-                        canvas.remove(arcs[i].objektyhrany.sipka);
-                        arcs[i].objektyhrany.vahaelem.removeChild(arcs[i].objektyhrany.vaha);
-                        canvas.remove(arcs[i].objektyhrany.vahaelem);
-                        arcs.splice(i, 1);
+                for (let i = 0; i < objectStore._arcs.length; i++) {
+                    if (element === objectStore._arcs[i].source || element === objectStore._arcs[i].target) {
+                        canvas.remove(objectStore._arcs[i].objektyhrany.polyciarapod);
+                        canvas.remove(objectStore._arcs[i].objektyhrany.polyciara);
+                        canvas.remove(objectStore._arcs[i].objektyhrany.sipka);
+                        objectStore._arcs[i].objektyhrany.vahaelem.removeChild(objectStore._arcs[i].objektyhrany.vaha);
+                        canvas.remove(objectStore._arcs[i].objektyhrany.vahaelem);
+                        objectStore._arcs.splice(i, 1);
                         i--;
                     }
                 }
@@ -80,8 +85,8 @@ class Transition {
 
                 svgmeno.removeChild(labelnode);
                 canvas.remove(svgmeno);
-                let i = transitions.indexOf(element);
-                transitions.splice(i, 1);
+                let i = objectStore._transitions.indexOf(element);
+                objectStore._transitions.splice(i, 1);
             }
             if (document.getElementById("arc").checked) {
                 if (kresli_sa_hrana === 0) {
@@ -93,12 +98,12 @@ class Transition {
                 }
                 else {
                     if (source_hrany.type !== element.type) {
-                        var actual = arcs.length;
-                        arcs[actual] = new Arc(source_hrany, element, "regular", canvas);
-                        var elem = arcs[actual].svgelement1;
+                        var actual = objectStore._arcs.length;
+                        objectStore._arcs[actual] = new Arc(source_hrany, element, "regular", app);
+                        var elem = objectStore._arcs[actual].svgelement1;
 
-                        Arc.elementypredhrany(canvas);
-                        Arc.labelypredhranyprve(canvas);
+                        Arc.elementypredhrany(app);
+                        Arc.labelypredhranyprve(app);
                     }
                 }
             }
@@ -106,12 +111,12 @@ class Transition {
             if (document.getElementById("resetarc").checked) {
                 if (kresli_sa_hrana !== 0) {
                     if (source_hrany.type !== element.type) {
-                        var actual = arcs.length;
-                        arcs[actual] = new Arc(source_hrany, element, "reset", canvas);
-                        var elem = arcs[actual].svgelement1;
+                        var actual = objectStore._arcs.length;
+                        objectStore._arcs[actual] = new Arc(source_hrany, element, "reset", app);
+                        var elem = objectStore._arcs[actual].svgelement1;
 
-                        Arc.elementypredhrany(canvas);
-                        Arc.labelypredhranyprve(canvas);
+                        Arc.elementypredhrany(app);
+                        Arc.labelypredhranyprve(app);
                     }
                 }
             }
@@ -119,12 +124,12 @@ class Transition {
             if (document.getElementById("inhibitorarc").checked) {
                 if (kresli_sa_hrana !== 0) {
                     if (source_hrany.type !== element.type) {
-                        var actual = arcs.length;
-                        arcs[actual] = new Arc(source_hrany, element, "inhibitor", canvas);
-                        var elem = arcs[actual].svgelement1;
+                        var actual = objectStore._arcs.length;
+                        objectStore._arcs[actual] = new Arc(source_hrany, element, "inhibitor", app);
+                        var elem = objectStore._arcs[actual].svgelement1;
 
-                        Arc.elementypredhrany(canvas);
-                        Arc.labelypredhranyprve(canvas);
+                        Arc.elementypredhrany(app);
+                        Arc.labelypredhranyprve(app);
                     }
                 }
             }
@@ -132,12 +137,12 @@ class Transition {
             if (document.getElementById("readarc").checked) {
                 if (kresli_sa_hrana !== 0) {
                     if (source_hrany.type !== element.type) {
-                        var actual = arcs.length;
-                        arcs[actual] = new Arc(source_hrany, element, "read", canvas);
-                        var elem = arcs[actual].svgelement1;
+                        var actual = objectStore._arcs.length;
+                        objectStore._arcs[actual] = new Arc(source_hrany, element, "read", app);
+                        var elem = objectStore._arcs[actual].svgelement1;
 
-                        Arc.elementypredhrany(canvas);
-                        Arc.labelypredhranyprve(canvas);
+                        Arc.elementypredhrany(app);
+                        Arc.labelypredhranyprve(app);
                     }
                 }
             }
@@ -175,7 +180,7 @@ class Transition {
                     }
                 }
                 if (doit)
-                    Transition.moveprechod(element, novex, novey);
+                    Transition.movePrechod(element, novex, novey, objectStore);
             }
 
             if (document.getElementById("move").checked) {
@@ -186,7 +191,7 @@ class Transition {
             }
 
             if (document.getElementById("label").checked) {
-                previousStatus = generujXML(1);
+                previousStatus = generujXML(1, objectStore);
                 var label = prompt("Please enter transition label", element.label);
                 if (label != null) {
                     element.label = label;
@@ -199,29 +204,29 @@ class Transition {
             }
 
             if (document.getElementById("fire").checked) {
-                if (Transition.enabled(element)) {
-                    Transition.consume(element);
-                    Transition.produce(element);
-                    Place.updatemarkings();
+                if (Transition.enabled(element, objectStore)) {
+                    this.consume(element, objectStore._arcs);
+                    this.produce(element, objectStore._arcs);
+                    Place.updatemarkings(objectStore._places);
                     if (document.getElementById("fire").checked) {
-                        for (let i = 0; i < transitions.length; i++) {
-                            if (Transition.enabled(transitions[i])) {
-                                transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "green");
-                                transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "yellowgreen");
+                        for (let i = 0; i < objectStore._transitions.length; i++) {
+                            if (Transition.enabled(objectStore._transitions[i],objectStore)) {
+                                objectStore._transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "green");
+                                objectStore._transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "yellowgreen");
                             }
                             else {
-                                transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "red");
-                                transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "white");
+                                objectStore._transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "red");
+                                objectStore._transitions[i].objektyelementu.element.setAttributeNS(null, "fill", "white");
                             }
                         }
                     }
                 }
             }
-        };
+        }.bind(this);
 
         svgmeno.onmousedown = function () {
             if (document.getElementById("label").checked) {
-                previousStatus = generujXML(1);
+                previousStatus = generujXML(1, objectStore);
                 var label = prompt("Please enter transition label", element.label);
                 if (label != null) {
                     element.label = label;
@@ -245,7 +250,67 @@ class Transition {
         return new objektyelementu(svgelement, svgmeno, labelnode, svgzamenom);
     }
 
-    static moveprechod(prechod, x, y) {
+
+
+
+    static enabled(transition, objectStore) {
+
+
+        for (let i = 0; i < objectStore._places.length; i++) {
+            objectStore._places[i].testmarking = objectStore._places[i].marking;
+        }
+
+        for (let i = 0; i < objectStore._arcs.length; i++) {
+            if (objectStore._arcs[i].target === transition && (objectStore._arcs[i].arctype === "inhibitor") && (objectStore._arcs[i].source.testmarking >= objectStore._arcs[i].vaha)) {
+                return false;
+            }
+        }
+
+        for (let i = 0; i < objectStore._arcs.length; i++) {
+            if (objectStore._arcs[i].target === transition && (objectStore._arcs[i].arctype === "read") && (objectStore._arcs[i].source.testmarking < objectStore._arcs[i].vaha)) {
+                return false;
+            }
+        }
+
+        for (let i = 0; i < objectStore._arcs.length; i++) {
+            if (objectStore._arcs[i].target === transition && objectStore._arcs[i].arctype === "regular") {
+                objectStore._arcs[i].source.testmarking = objectStore._arcs[i].source.testmarking - objectStore._arcs[i].vaha;
+            }
+        }
+
+        for (let i = 0; i < objectStore._places.length; i++) {
+            if (objectStore._places[i].testmarking < 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    consume(transition, arcs) {
+        for (let i = 0; i < arcs.length; i++) {
+            if (arcs[i].target === transition && (arcs[i].arctype === "regular")) {
+                arcs[i].source.marking = arcs[i].source.marking - arcs[i].vaha;
+            }
+        }
+
+        for (let i = 0; i < arcs.length; i++) {
+            if (arcs[i].target === transition && (arcs[i].arctype === "reset")) {
+                arcs[i].source.marking = 0;
+
+            }
+        }
+    }
+
+    produce(transition, arcs) {
+        for (let i = 0; i < arcs.length; i++) {
+            if (arcs[i].source === transition) {
+                arcs[i].target.marking = arcs[i].target.marking + arcs[i].vaha;
+            }
+        }
+    }
+
+    static movePrechod(prechod, x, y, objectStore) {
         prechod.x = x;
         prechod.y = y;
         prechod.objektyelementu.element.setAttributeNS(null, "x", x - velkost / 2);
@@ -264,65 +329,19 @@ class Transition {
         prechod.objektyelementu.menoelem.setAttributeNS(null, "y", y + velkost / 2 + fontsizeoffset);
 
 
-        for (let i = 0; i < arcs.length; i++) {
-            if (prechod === arcs[i].source || prechod === arcs[i].target) {
-                Arc.updatehranusvg(arcs[i]);
+        for (let i = 0; i < objectStore._arcs.length; i++) {
+            if (prechod === objectStore._arcs[i].source || prechod === objectStore._arcs[i].target) {
+                Arc.updatehranusvg(objectStore._arcs[i]);
             }
         }
     }
+}
 
-    static enabled(transition) {
-        for (let i = 0; i < places.length; i++) {
-            places[i].testmarking = places[i].marking;
-        }
-
-        for (let i = 0; i < arcs.length; i++) {
-            if (arcs[i].target === transition && (arcs[i].arctype === "inhibitor") && (arcs[i].source.testmarking >= arcs[i].vaha)) {
-                return false;
-            }
-        }
-
-        for (let i = 0; i < arcs.length; i++) {
-            if (arcs[i].target === transition && (arcs[i].arctype === "read") && (arcs[i].source.testmarking < arcs[i].vaha)) {
-                return false;
-            }
-        }
-
-        for (let i = 0; i < arcs.length; i++) {
-            if (arcs[i].target === transition && arcs[i].arctype === "regular") {
-                arcs[i].source.testmarking = arcs[i].source.testmarking - arcs[i].vaha;
-            }
-        }
-
-        for (let i = 0; i < places.length; i++) {
-            if (places[i].testmarking < 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    static consume(transition) {
-        for (let i = 0; i < arcs.length; i++) {
-            if (arcs[i].target === transition && (arcs[i].arctype === "regular")) {
-                arcs[i].source.marking = arcs[i].source.marking - arcs[i].vaha;
-            }
-        }
-
-        for (let i = 0; i < arcs.length; i++) {
-            if (arcs[i].target === transition && (arcs[i].arctype === "reset")) {
-                arcs[i].source.marking = 0;
-
-            }
-        }
-    }
-
-    static produce(transition) {
-        for (let i = 0; i < arcs.length; i++) {
-            if (arcs[i].source === transition) {
-                arcs[i].target.marking = arcs[i].target.marking + arcs[i].vaha;
-            }
-        }
+class objektyelementu{
+    constructor(a, b, c, d){
+        this.element = a;
+        this.menoelem = b;
+        this.meno = c;
+        this.zamenom = d;
     }
 }

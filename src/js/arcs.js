@@ -1,6 +1,5 @@
-class Arc {
-
-    constructor(source, target, arctype, canvas) {
+class Arc{
+    constructor(source, target, arctype, app) {
         this.type = "arc";
         this.arctype = arctype;
         this.id = attachid();
@@ -10,10 +9,13 @@ class Arc {
         this.vaha = 1;
         this.vahalabel = "";
         this.bodyhrany = this.prvebodyhrany(source, target);
-        this.objektyhrany = this.novy_svg_arc(this, canvas, undefined, xmlns, this.bodyhrany[0], this.bodyhrany[1]);
+        this.objektyhrany = this.novy_svg_arc(this, app, undefined, xmlns, this.bodyhrany[0], this.bodyhrany[1]);
         this.dataref = false;
+
     }
-    novy_svg_arc(element, canvas, undefined, xmlns, zaciatok, koniec) {
+
+    novy_svg_arc(element, app, undefined, xmlns, zaciatok, koniec) {
+        var canvas = app.canvas;
 
         let dx = koniec.x - zaciatok.x;
         let dy = koniec.y - zaciatok.y;
@@ -126,11 +128,11 @@ class Arc {
 
 
         svgelement.onmousedown = function (event) {
-            element.mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, labelnode, svgmeno)
+            element.mysdownnahrane(app, event, element, svgelement, svgelement1, svgelement2, labelnode, svgmeno)
         };
 
         svgelement1.onmousedown = function (event) {
-            element.mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, labelnode, svgmeno)
+            element.mysdownnahrane(app, event, element, svgelement, svgelement1, svgelement2, labelnode, svgmeno)
         };
 
 
@@ -205,7 +207,12 @@ class Arc {
         return new objektyhrany(svgelement, svgelement1, svgelement2, svgmeno, labelnode);
     }
 
-    static elementypredhrany(canvas) {
+    static elementypredhrany(app) {
+        let objectStore = app.$store("model").get(0);     //TODO: ok ?
+        let canvas = app.canvas;
+        let places = objectStore._places;
+        let transitions = objectStore._transitions;
+
         for (let i = 0; i < places.length; i++) {
             canvas.add(places[i].objektymiesta.element);
 
@@ -224,7 +231,7 @@ class Arc {
             places[i].objektymiesta.svgmarking.appendChild(places[i].objektymiesta.markingnode);
             canvas.add(places[i].objektymiesta.svgmarking);
         }
-        Place.updatemarkings();
+        Place.updatemarkings(places);
         for (let i = 0; i < transitions.length; i++) {
             canvas.add(transitions[i].objektyelementu.element);
             transitions[i].objektyelementu.element.setAttributeNS(null, "stroke", "black");
@@ -233,6 +240,7 @@ class Arc {
     }
 
     static novy_svg_temp_arc(canvas, xmlns, zaciatok, koniec, arctype) {
+
         let dx = koniec.x - zaciatok.x;
         let dy = koniec.y - zaciatok.y;
         let dlzkahrany = Math.sqrt(dx * dx + dy * dy);
@@ -285,159 +293,9 @@ class Arc {
         return new objektyhranymove(svgelement, svgelement2, arctype);
     }
 
-    mysdownnahrane(event, element, svgelement, svgelement1, svgelement2, labelnode, svgmeno) {
-        if (document.getElementById("delete").checked) {
 
-            let novy_bod = new Point(0, 0);
 
-            novy_bod.x = getMousePositionX(event);
 
-            novy_bod.y = getMousePositionY(event);
-            let deletujembod = 0;
-
-            for (let i = 1; i < element.bodyhrany.length - 1; i++) {
-                if (Math.abs(element.bodyhrany[i].x - novy_bod.x) <= 5 && Math.abs(element.bodyhrany[i].y - novy_bod.y) <= 5) {
-                    element.bodyhrany.splice(i, 1);
-                    Arc.updatehranusvg(element);
-                    deletujembod = 1;
-                    break;
-                }
-            }
-            if (deletujembod === 0) {
-                canvas.remove(svgelement);
-                canvas.remove(svgelement1);
-                canvas.remove(svgelement2);
-                svgmeno.removeChild(labelnode);
-                canvas.remove(svgmeno);
-
-                let i = arcs.indexOf(element);
-                arcs.splice(i, 1);
-            }
-        }
-
-        if (document.getElementById("position").checked) {
-            let novy_bod = new Point(0, 0);
-
-            novy_bod.x = getMousePositionX(event);
-
-            novy_bod.y = getMousePositionY(event);
-
-            for (let i = 1; i < element.bodyhrany.length - 1; i++) {
-                if (Math.abs(element.bodyhrany[i].x - novy_bod.x) <= 5 && Math.abs(element.bodyhrany[i].y - novy_bod.y) <= 5) {
-                    indexbodu = i;
-                    let doit = false;
-                    let novex = element.bodyhrany[i].x;
-                    let novey = element.bodyhrany[i].y;
-                    let a = prompt("Please enter x-coordinate of the point (not smaller than " + posunutie_suradnic + " and not greater than " + maxx + " ):", element.bodyhrany[i].x);
-                    if (a != null) {
-                        let x = parseInt(a);
-                        if (isNaN(x)) {
-                            alert("x is not a number");
-                        } else {
-                            if (x <= posunutie_suradnic || maxx <= x)
-                                alert("x is out of dimension");
-                            else {
-                                novex = x;
-                                doit = true;
-                            }
-                        }
-                    }
-                    let b = prompt("Please enter y-coordinate of the point (not smaller than " + posunutie_suradnic + " and not greater than " + maxy + " ):", element.bodyhrany[i].y);
-                    if (b != null) {
-                        let y = parseInt(b);
-                        if (isNaN(y)) {
-                            alert("y is not a number");
-                        } else {
-                            if (y <= posunutie_suradnic || maxy <= y)
-                                alert("y is out of dimension");
-                            else {
-                                novey = y;
-                                doit = true;
-                            }
-                        }
-                    }
-                    if (doit) {
-                        element.bodyhrany[i].x = novex;
-                        element.bodyhrany[i].y = novey;
-                        Arc.updatehranusvg(element);
-                    }
-                    break;
-                }
-            }
-        }
-
-        if (document.getElementById("move").checked) {
-            if (posuva_sa_hrana === 0) {
-
-                let novy_bod = new Point(0, 0);
-                novy_bod.x = getMousePositionX(event);
-
-                novy_bod.y = getMousePositionY(event);
-
-                for (let i = 1; i < element.bodyhrany.length - 1; i++) {
-                    if (Math.abs(element.bodyhrany[i].x - novy_bod.x) <= 5 && Math.abs(element.bodyhrany[i].y - novy_bod.y) <= 5) {
-                        indexbodu = i;
-                        posuvanahrana = element;
-                        posuva_sa_hrana = 1;
-                        Arc.updatehranusvg(element);
-                        break;
-                    }
-                }
-
-                if (posuva_sa_hrana === 0) {
-                    for (let i = 0; i < element.bodyhrany.length - 1; i++) {
-                        let dx = element.bodyhrany[i + 1].x - element.bodyhrany[i].x;
-                        let dy = element.bodyhrany[i + 1].y - element.bodyhrany[i].y;
-                        let dxn = novy_bod.x - element.bodyhrany[i].x;
-                        let dyn = novy_bod.y - element.bodyhrany[i].y;
-                        let dlzkahrany = Math.sqrt(dx * dx + dy * dy);
-                        let dlzkapomys = Math.sqrt(dxn * dxn + dyn * dyn);
-                        let pomer = dlzkapomys / dlzkahrany;
-                        let nx = element.bodyhrany[i].x + dx * pomer;
-                        let ny = element.bodyhrany[i].y + dy * pomer;
-
-                        if (Math.abs(nx - novy_bod.x) <= 2 && Math.abs(ny - novy_bod.y) <= 2) {
-                            element.bodyhrany.splice(i + 1, 0, novy_bod);
-                            indexbodu = i + 1;
-                            posuvanahrana = element;
-                            posuva_sa_hrana = 1;
-                            Arc.updatehranusvg(element);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (document.getElementById("arc_weight").checked && (element.arctype !== "reset")) {
-
-            let vaha = element.vaha;
-
-            let zadane = prompt("Please enter positive arc weight", element.vaha);
-
-            if (zadane != null) {
-                vaha = parseInt(zadane);
-                if (isNaN(vaha))
-                    alert("Not a number");
-
-                if (vaha <= 0)
-                    alert("Not positive number");
-
-                if (!isNaN(vaha) && vaha > 0) {
-                    element.vaha = vaha;
-                    element.dataref = false;
-                    if (vaha === 1)
-                        element.vahalabel = "";
-                    else
-                        element.vahalabel = vaha;
-                    labelnode.nodeValue = element.vahalabel;
-                }
-            }
-        }
-        if (document.getElementById("arc_dataref").checked && (element.arctype !== "reset")) {
-            attach_data_to_arc(element);
-        }
-    }
 
     prvebodyhrany(source, target) {
         let polebodov = [];
@@ -471,59 +329,7 @@ class Arc {
         return new Point(nx, ny);
     }
 
-    static updatehranusvg(hrana) {
-        let text = "";
-        let last = hrana.bodyhrany.length - 1;
-        let stred = parseInt(last / 2);
 
-        if (hrana.bodyhrany.length > 2) {
-            hrana.bodyhrany[0] = Arc.zaciatok_hrany(hrana.source, hrana.bodyhrany[1]);
-            hrana.bodyhrany[last] = Arc.koniec_hrany(hrana.bodyhrany[last - 1], hrana.target);
-        }
-        else {
-            hrana.bodyhrany[0] = Arc.zaciatok_hrany(hrana.source, hrana.target);
-            hrana.bodyhrany[last] = Arc.koniec_hrany(hrana.source, hrana.target);
-        }
-
-        let bodvaha = Arc.bodvahy(hrana.bodyhrany[stred], hrana.bodyhrany[stred + 1]);
-        for (let i = 0; i < hrana.bodyhrany.length - 1; i++) {
-            text = text + hrana.bodyhrany[i].x + "," + hrana.bodyhrany[i].y + " ";
-        }
-
-        let skratenykoniec = Arc.skrathranu(hrana);
-        text = text + skratenykoniec.x + "," + skratenykoniec.y;
-
-        if (posuva_sa_hrana === 1) {
-            hrana.objektyhrany.polyciara.setAttributeNS(null, "stroke", "red");
-            hrana.objektyhrany.sipka.setAttributeNS(null, "stroke", "red");
-            if (hrana.arctype === "inhibitor")
-                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "white");
-            else
-                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "red");
-        } else {
-            hrana.objektyhrany.polyciara.setAttributeNS(null, "stroke", "black");
-
-            hrana.objektyhrany.sipka.setAttributeNS(null, "stroke", "black");
-            if (hrana.arctype === "inhibitor")
-                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "white");
-            else
-                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "black");
-
-        }
-
-        hrana.objektyhrany.polyciarapod.setAttributeNS(null, "points", text);
-        hrana.objektyhrany.polyciara.setAttributeNS(null, "points", text);
-
-        if (hrana.arctype === "inhibitor" || hrana.arctype === "read") {
-            hrana.objektyhrany.sipka.setAttributeNS(null, "cx", Arc.bodInhibitorSipky(hrana.bodyhrany[last - 1].x, hrana.bodyhrany[last - 1].y, hrana.bodyhrany[last].x, hrana.bodyhrany[last].y).x);
-            hrana.objektyhrany.sipka.setAttributeNS(null, "cy", Arc.bodInhibitorSipky(hrana.bodyhrany[last - 1].x, hrana.bodyhrany[last - 1].y, hrana.bodyhrany[last].x, hrana.bodyhrany[last].y).y);
-        } else {
-            hrana.objektyhrany.sipka.setAttributeNS(null, "points", Arc.bodySipky(hrana.bodyhrany[last - 1].x, hrana.bodyhrany[last - 1].y, hrana.bodyhrany[last].x, hrana.bodyhrany[last].y, hrana.arctype));
-        }
-
-        hrana.objektyhrany.vahaelem.setAttributeNS(null, "x", `${bodvaha.x - vahaoffset / 3}`);
-        hrana.objektyhrany.vahaelem.setAttributeNS(null, "y", `${bodvaha.y + vahaoffset / 2}`);
-    }
 
     static bodvahy(startbod, endbod) {
         let startPoint_x = startbod.x;
@@ -685,8 +491,16 @@ class Arc {
             return new Point(tnovex, tnovey);
         }
     }
-    
-    static labelypredhranyprve(canvas) {
+
+
+
+    static labelypredhranyprve(app)
+    {
+        let objectStore = app.$store("model").get(0);     //TODO: ok ?
+        let canvas = app.canvas;
+        let places = objectStore._places;
+        let transitions = objectStore._transitions;
+
         for (let i = 0; i < places.length; i++) {
             canvas.add(places[i].objektymiesta.zamenom);
             canvas.add(places[i].objektymiesta.menoelem);
@@ -708,4 +522,258 @@ class Arc {
             transitions[i].objektyelementu.menoelem.setAttributeNS(null, "x", transitions[i].x - sirkatextu / 2);
         }
     }
+    static updatehranusvg(hrana) {
+        let text = "";
+        let last = hrana.bodyhrany.length - 1;
+        let stred = parseInt(last / 2);
+
+        if (hrana.bodyhrany.length > 2) {
+            hrana.bodyhrany[0] = Arc.zaciatok_hrany(hrana.source, hrana.bodyhrany[1]);
+            hrana.bodyhrany[last] = Arc.koniec_hrany(hrana.bodyhrany[last - 1], hrana.target);
+        }
+        else {
+            hrana.bodyhrany[0] = Arc.zaciatok_hrany(hrana.source, hrana.target);
+            hrana.bodyhrany[last] = Arc.koniec_hrany(hrana.source, hrana.target);
+        }
+
+        let bodvaha = Arc.bodvahy(hrana.bodyhrany[stred], hrana.bodyhrany[stred + 1]);
+        for (let i = 0; i < hrana.bodyhrany.length - 1; i++) {
+            text = text + hrana.bodyhrany[i].x + "," + hrana.bodyhrany[i].y + " ";
+        }
+
+        let skratenykoniec = Arc.skrathranu(hrana);
+        text = text + skratenykoniec.x + "," + skratenykoniec.y;
+
+        if (posuva_sa_hrana === 1) {
+            hrana.objektyhrany.polyciara.setAttributeNS(null, "stroke", "red");
+            hrana.objektyhrany.sipka.setAttributeNS(null, "stroke", "red");
+            if (hrana.arctype === "inhibitor")
+                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "white");
+            else
+                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "red");
+        } else {
+            hrana.objektyhrany.polyciara.setAttributeNS(null, "stroke", "black");
+
+            hrana.objektyhrany.sipka.setAttributeNS(null, "stroke", "black");
+            if (hrana.arctype === "inhibitor")
+                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "white");
+            else
+                hrana.objektyhrany.sipka.setAttributeNS(null, "fill", "black");
+
+        }
+
+        hrana.objektyhrany.polyciarapod.setAttributeNS(null, "points", text);
+        hrana.objektyhrany.polyciara.setAttributeNS(null, "points", text);
+
+        if (hrana.arctype === "inhibitor" || hrana.arctype === "read") {
+            hrana.objektyhrany.sipka.setAttributeNS(null, "cx", Arc.bodInhibitorSipky(hrana.bodyhrany[last - 1].x, hrana.bodyhrany[last - 1].y, hrana.bodyhrany[last].x, hrana.bodyhrany[last].y).x);
+            hrana.objektyhrany.sipka.setAttributeNS(null, "cy", Arc.bodInhibitorSipky(hrana.bodyhrany[last - 1].x, hrana.bodyhrany[last - 1].y, hrana.bodyhrany[last].x, hrana.bodyhrany[last].y).y);
+        } else {
+            hrana.objektyhrany.sipka.setAttributeNS(null, "points", Arc.bodySipky(hrana.bodyhrany[last - 1].x, hrana.bodyhrany[last - 1].y, hrana.bodyhrany[last].x, hrana.bodyhrany[last].y, hrana.arctype));
+        }
+
+        hrana.objektyhrany.vahaelem.setAttributeNS(null, "x", `${bodvaha.x - vahaoffset / 3}`);
+        hrana.objektyhrany.vahaelem.setAttributeNS(null, "y", `${bodvaha.y + vahaoffset / 2}`);
+    }
+
+    mysdownnahrane(app, event, element, svgelement, svgelement1, svgelement2, labelnode, svgmeno) {
+        let objectStore = app.$store("model").get(0);     //TODO: ok ?
+        let canvas = app.canvas;
+        let arcs = objectStore._arcs;
+
+        if (document.getElementById("delete").checked) {
+
+            let novy_bod = new Point(0, 0);
+
+            novy_bod.x = getMousePositionX(event, app);
+
+            novy_bod.y = getMousePositionY(event, app);
+            let deletujembod = 0;
+
+            for (let i = 1; i < element.bodyhrany.length - 1; i++) {
+                if (Math.abs(element.bodyhrany[i].x - novy_bod.x) <= 5 && Math.abs(element.bodyhrany[i].y - novy_bod.y) <= 5) {
+                    element.bodyhrany.splice(i, 1);
+                    Arc.updatehranusvg(element);
+                    deletujembod = 1;
+                    break;
+                }
+            }
+            if (deletujembod === 0) {
+                canvas.remove(svgelement);
+                canvas.remove(svgelement1);
+                canvas.remove(svgelement2);
+                svgmeno.removeChild(labelnode);
+                canvas.remove(svgmeno);
+
+                let i = arcs.indexOf(element);
+                arcs.splice(i, 1);
+            }
+        }
+
+        if (document.getElementById("position").checked) {
+            let novy_bod = new Point(0, 0);
+
+            novy_bod.x = getMousePositionX(event, app);
+
+            novy_bod.y = getMousePositionY(event, app);
+
+            for (let i = 1; i < element.bodyhrany.length - 1; i++) {
+                if (Math.abs(element.bodyhrany[i].x - novy_bod.x) <= 5 && Math.abs(element.bodyhrany[i].y - novy_bod.y) <= 5) {
+                    indexbodu = i;
+                    let doit = false;
+                    let novex = element.bodyhrany[i].x;
+                    let novey = element.bodyhrany[i].y;
+                    let a = prompt("Please enter x-coordinate of the point (not smaller than " + posunutie_suradnic + " and not greater than " + maxx + " ):", element.bodyhrany[i].x);
+                    if (a != null) {
+                        let x = parseInt(a);
+                        if (isNaN(x)) {
+                            alert("x is not a number");
+                        } else {
+                            if (x <= posunutie_suradnic || maxx <= x)
+                                alert("x is out of dimension");
+                            else {
+                                novex = x;
+                                doit = true;
+                            }
+                        }
+                    }
+                    let b = prompt("Please enter y-coordinate of the point (not smaller than " + posunutie_suradnic + " and not greater than " + maxy + " ):", element.bodyhrany[i].y);
+                    if (b != null) {
+                        let y = parseInt(b);
+                        if (isNaN(y)) {
+                            alert("y is not a number");
+                        } else {
+                            if (y <= posunutie_suradnic || maxy <= y)
+                                alert("y is out of dimension");
+                            else {
+                                novey = y;
+                                doit = true;
+                            }
+                        }
+                    }
+                    if (doit) {
+                        element.bodyhrany[i].x = novex;
+                        element.bodyhrany[i].y = novey;
+                        Arc.updatehranusvg(element);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (document.getElementById("move").checked) {
+            if (posuva_sa_hrana === 0) {
+
+                let novy_bod = new Point(0, 0);
+
+                novy_bod.x = getMousePositionX(event, app);
+
+                novy_bod.y = getMousePositionY(event, app);
+
+                for (let i = 1; i < element.bodyhrany.length - 1; i++) {
+                    if (Math.abs(element.bodyhrany[i].x - novy_bod.x) <= 5 && Math.abs(element.bodyhrany[i].y - novy_bod.y) <= 5) {
+                        indexbodu = i;
+                        posuvanahrana = element;
+                        posuva_sa_hrana = 1;
+                        Arc.updatehranusvg(element);
+                        break;
+                    }
+                }
+
+                if (posuva_sa_hrana === 0) {
+                    for (let i = 0; i < element.bodyhrany.length - 1; i++) {
+                        let dx = element.bodyhrany[i + 1].x - element.bodyhrany[i].x;
+                        let dy = element.bodyhrany[i + 1].y - element.bodyhrany[i].y;
+                        let dxn = novy_bod.x - element.bodyhrany[i].x;
+                        let dyn = novy_bod.y - element.bodyhrany[i].y;
+                        let dlzkahrany = Math.sqrt(dx * dx + dy * dy);
+                        let dlzkapomys = Math.sqrt(dxn * dxn + dyn * dyn);
+                        let pomer = dlzkapomys / dlzkahrany;
+                        let nx = element.bodyhrany[i].x + dx * pomer;
+                        let ny = element.bodyhrany[i].y + dy * pomer;
+
+                        if (Math.abs(nx - novy_bod.x) <= 2 && Math.abs(ny - novy_bod.y) <= 2) {
+                            element.bodyhrany.splice(i + 1, 0, novy_bod);
+                            indexbodu = i + 1;
+                            posuvanahrana = element;
+                            posuva_sa_hrana = 1;
+                            Arc.updatehranusvg(element);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (document.getElementById("arc_weight").checked && (element.arctype !== "reset")) {
+
+            let vaha = element.vaha;
+
+            let zadane = prompt("Please enter positive arc weight", element.vaha);
+
+            if (zadane != null) {
+                vaha = parseInt(zadane);
+                if (isNaN(vaha))
+                    alert("Not a number");
+
+                if (vaha <= 0)
+                    alert("Not positive number");
+
+                if (!isNaN(vaha) && vaha > 0) {
+                    element.vaha = vaha;
+                    element.dataref = false;
+                    if (vaha === 1)
+                        element.vahalabel = "";
+                    else
+                        element.vahalabel = vaha;
+                    labelnode.nodeValue = element.vahalabel;
+                }
+            }
+        }
+        if (document.getElementById("arc_dataref").checked && (element.arctype !== "reset")) {
+            attach_data_to_arc(element);
+        }
+    }
+
+    static reset_hranu(canvas) {
+        if (posuva_sa_hrana === 1) {
+            posuvanahrana.objektyhrany.polyciara.setAttributeNS(null, "stroke", "black");
+            if (posuvanahrana.arctype === "inhibitor")
+                posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "fill", "white");
+            else
+                posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "fill", "black");
+
+            posuvanahrana.objektyhrany.sipka.setAttributeNS(null, "stroke", "black");
+
+            pocetmousedownposuv = 0;
+            posuva_sa_hrana = 0;
+        }
+        if (kresli_sa_hrana === 1) {
+            canvas.remove(hranabymove.polyciara);
+            canvas.remove(hranabymove.sipka);
+
+            pocetmousedown = 0;
+            kresli_sa_hrana = 0;
+        }
+    }
+}
+
+class objektyhrany{
+    constructor(a, b, c, d, e) {
+        this.polyciarapod = a;
+        this.polyciara = b;
+        this.sipka = c;
+        this.vahaelem = d;
+        this.vaha = e;
+    }
+}
+
+class objektyhranymove{
+    constructor(a, b, arctype)
+    {
+        this.polyciara = a;
+        this.sipka = b;
+        this.arctype = arctype;
+    }
+
 }

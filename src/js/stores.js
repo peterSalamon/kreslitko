@@ -16,12 +16,17 @@ class StoreProvider {
             return this._stores[key];
         return null;
     }
+
+    removeModel(app, key){
+        this.getStore(key).clearmodel(app);
+    }
 }
 
 class ModelStore {
 
     constructor() {
         this._models = {};
+        this.save(new Model());
     }
 
     /**
@@ -59,6 +64,26 @@ class ModelStore {
             return model;
         }
         return null;
+    }
+
+    clearmodel(app) {
+        let objectStore = app.$store("model").get(0);     //TODO: ok ?
+
+        if (objectStore._places.length > 0 || objectStore._transitions.length > 0) {
+            var c = confirm("Are you sure to clear? Any unsaved changes will be lost.");
+            if (c) {
+                deleteall(app);
+                menofilu = "newmodel.xml";
+                document.getElementById('menofilu').innerHTML = menofilu;
+            }
+        }
+        else {
+            deleteall(app);
+            menofilu = "newmodel.xml";
+            document.getElementById('menofilu').innerHTML = menofilu;
+        }
+        this._models = {};
+        this.save(new Model());
     }
 
 }

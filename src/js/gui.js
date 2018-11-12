@@ -1,16 +1,6 @@
 
-
-
-
 //TODO do something about these messages :(
-function propertiesM() {
-    var spolu = places.length + transitions.length + arcs.length;
-    alert("Number of places: " + places.length + "\nNumber of transitions: " + transitions.length + "\nNumber of arcs: " + arcs.length + "\nNumber of elements: " + spolu);
-}
 
-function about() {
-    alert("PETRIFLOW is a light online Petri net editor on cloud operated by BIREGAL.\nPETRIFLOW was implemented by Gabriel Juhas and Ana Juhasova.");
-}
 
 function help() {
     modal.style.display = shade.style.display = 'block';
@@ -87,13 +77,6 @@ function helpfire() {
     helptext.nodeValue = "After you click on the radio button, you will change to the firing mode. The transitions, which are enabled to fire, become green. A transition is enabled to fire if the sum of the weights of the arcs from places to the transition is smaller or equal to the number of tokens in the places and if the number of tokens in any place connected by an inhibitor arc with the transition is smaller than the weight of the inhibitor arc. Just click on an enabled green transition to fire it. For an arc from a place to the transition it will remove the number of tokens given by the arc weight from the place. For an arc from the transition to a place, it will add the number of tokens given by the arc weight to the place. Note that the default weight of an arc is one. For a reset arc from a place to the transition, it will remove all tokens from the place. An inhibitor arc from a place to the transition does not change the marking of the place by firing.";
 }
 
-function getMousePositionY(event) {
-    return event.pageY - app.canvas.VERTICAL_OFFSET;
-}
-
-function getMousePositionX(event) {
-    return event.pageX - app.canvas.HORIZONTAL_OFFSET;
-}
 
 function add_row() {
     var new_variable = document.getElementById("new_variable").value;
@@ -181,7 +164,7 @@ function attach_row(no) {
 
         zavri2();
         arc_for_data.objektyhrany.vaha.nodeValue = arc_for_data.vahalabel;
-        updatehranusvg(arc_for_data);
+        Arc.updatehranusvg(arc_for_data);
 
     }
 }
@@ -196,7 +179,7 @@ function delete_arc_references(no) {
             arcs[j].vahalabel = arcs[j].vaha;
 
             arcs[j].objektyhrany.vaha.nodeValue = arcs[j].vahalabel;
-            updatehranusvg(arcs[j]);
+            Arc.updatehranusvg(arcs[j]);
 
 
         }
@@ -272,7 +255,7 @@ function change_arc_weights(no) {
                     arcs[j].vahalabel = processdata[i].name;
                 }
                 arcs[j].objektyhrany.vaha.nodeValue = arcs[j].vahalabel;
-                updatehranusvg(arcs[j]);
+                Arc.updatehranusvg(arcs[j]);
 
             }
         }
@@ -280,20 +263,7 @@ function change_arc_weights(no) {
 }
 
 
-function datavariables() {
-    datadiv.style.display = shade.style.display = 'block';
 
-    var no;
-    for (var i = 0; i < processdata.length; i++) {
-        no = processdata[i].id;
-        document.getElementById("label_edit" + no).style.display = "inline-block";
-        document.getElementById("label_save" + no).style.display = "none";
-        document.getElementById("label_delete" + no).style.display = "inline-block";
-        document.getElementById("label_attach" + no).style.display = "none";
-    }
-
-    document.getElementById("last_row").style.display = "table-row";
-}
 
 function attach_data_to_arc(chosenarc) {
     datadiv.style.display = shade.style.display = 'block';
