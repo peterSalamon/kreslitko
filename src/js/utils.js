@@ -196,47 +196,9 @@ function zavripokliku(event) {
     document.body.removeChild(event.target);
 }
 
-function undo() {
-    if (previousStatus != null) {
-        nacitajxml(mojparser(previousStatus));
-        previousStatus = null;
-    }
-}
 
-function deleteall() {
-    for (let i = 0; i < arcs.length; i++) {
-        canvas.remove(arcs[i].objektyhrany.polyciarapod);
-        canvas.remove(arcs[i].objektyhrany.polyciara);
-        canvas.remove(arcs[i].objektyhrany.sipka);
-        arcs[i].objektyhrany.vahaelem.removeChild(arcs[i].objektyhrany.vaha);
-        canvas.remove(arcs[i].objektyhrany.vahaelem);
-    }
-    arcs.splice(0, arcs.length);
 
-    for (let i = 0; i < transitions.length; i++) {
-        canvas.remove(transitions[i].objektyelementu.element);
-        canvas.remove(transitions[i].objektyelementu.zamenom);
-        transitions[i].objektyelementu.menoelem.removeChild(transitions[i].objektyelementu.meno);
-        canvas.remove(transitions[i].objektyelementu.menoelem);
 
-    }
-    transitions.splice(0, transitions.length);
-
-    for (let i = 0; i < places.length; i++) {
-        canvas.remove(places[i].objektymiesta.element);
-        canvas.remove(places[i].objektymiesta.zamenom);
-        places[i].objektymiesta.menoelem.removeChild(places[i].objektymiesta.meno);
-        canvas.remove(places[i].objektymiesta.menoelem);
-        for (var j = 0; j < places[i].markingtokens.length; j++) {
-            canvas.remove(places[i].markingtokens[j]);
-        }
-        places[i].objektymiesta.svgmarking.removeChild(places[i].objektymiesta.markingnode);
-        canvas.remove(places[i].objektymiesta.svgmarking);
-    }
-    places.splice(0, places.length);
-
-id = 0;
-}
 
 function objektyhranymove(a, b, arctype) {
     this.polyciara = a;

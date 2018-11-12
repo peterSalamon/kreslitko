@@ -32,45 +32,12 @@ function exportasXML(format) {
                 }
                 downloadLink.click();
             }
-            document.getElementById('menofilu').innerHTML = menofilu;
+            document.getElementById('menofilu').innerHTML = menofilu;   //TODO: odkial sa to cita?
         }
     }
 }
 
-function exportasSVG() {
-    var prevodnik = new XMLSerializer();
-    var textnazapis = prevodnik.serializeToString(canvas.svg);
-    var menosuboru = prompt("Please enter the file name", menofilu + ".svg");
-    if (menosuboru != null) {
-        var xmlakoBlob = null;
-        if (window.Blob) {
-            xmlakoBlob = new Blob([textnazapis], {type: 'text/plain;charset=utf-8'});
-        }
 
-
-        if (xmlakoBlob != null) {
-            if (window.navigator.msSaveBlob !== undefined) {
-                window.navigator.msSaveBlob(xmlakoBlob, menosuboru);
-            } else {
-                downloadLink = document.createElement("a");
-                downloadLink.download = menosuboru;
-                downloadLink.innerHTML = "Download Model" + menosuboru;
-                if (window.webkitURL !== undefined) {
-                    downloadLink.href = window.webkitURL.createObjectURL(xmlakoBlob);
-                }
-                else {
-                    if (window.URL.createObjectURL !== undefined) {
-                        downloadLink.href = window.URL.createObjectURL(xmlakoBlob);
-                        downloadLink.onclick = zavripokliku;
-                        downloadLink.style.display = "none";
-                        document.body.appendChild(downloadLink);
-                    }
-                }
-                downloadLink.click();
-            }
-        }
-    }
-}
 
 function generujXML(format) {
     var xmltext = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<document xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"https://modeler.netgrif.com/petriflow_schema.xsd\">\n";

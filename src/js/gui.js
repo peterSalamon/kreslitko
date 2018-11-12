@@ -1,18 +1,4 @@
-function clearmodel() { //TODO move to ModelStore
-    if (places.length > 0 || transitions.length > 0) {
-        var c = confirm("Are you sure to clear? Any unsaved changes will be lost.");
-        if (c) {
-            deleteall();
-            menofilu = "newmodel.xml";
-            document.getElementById('menofilu').innerHTML = menofilu;
-        }
-    }
-    else {
-        deleteall();
-        menofilu = "newmodel.xml";
-        document.getElementById('menofilu').innerHTML = menofilu;
-    }
-}
+
 
 
 

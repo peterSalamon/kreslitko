@@ -26,13 +26,17 @@
     <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
 
     <!--JS ES6 scripts-->
-    <script src="src/js/classes.js" type="text/javascript"></script>
+    <!--<script src="src/js/classes.js" type="text/javascript"></script>-->
     <script src="src/js/services.js" type="text/javascript"></script>
     <script src="src/js/stores.js" type="text/javascript"></script>
     <script src="src/js/Transition.js" type="text/javascript"></script>
     <script src="src/js/Place.js" type="text/javascript"></script>
     <script src="src/js/ObjektyMiesta.js" type="text/javascript"></script>
     <script src="src/js/Arc.js" type="text/javascript"></script>
+    <script src="src/js/Canvas.js" type="text/javascript"></script>
+    <script src="src/js/Application.js" type="text/javascript"></script>
+    <script src="src/js/Model.js" type="text/javascript"></script>
+    <script src="src/js/Point.js" type="text/javascript"></script>
 
     <!--JS ES5 scripts-->
     <script src="src/js/globals.js" type="text/javascript"></script>
@@ -331,7 +335,7 @@
         <br>
 
         <!--OPEN-->
-        <input type="file" id="otvorSubor" class="button--input" onchange="otvorFile(event)"/>
+        <input type="file" id="otvorSubor" class="button--input" />
         <label id="otvorSuborButton" for="otvorSubor"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/open.svg" alt="open"/>
@@ -343,7 +347,7 @@
         <br>
 
         <!--RELOAD-->
-        <input type="button" name="radSize" id="reload" class="button--input" value="Reload" onclick="reloadModel()"/>
+        <input type="button" name="radSize" id="reload" class="button--input" value="Reload"/>
         <label id="reloadButton" for="reload"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/reload.svg" alt="reload"/>
@@ -380,7 +384,7 @@
         <br>
 
         <!--SAVE AS SVG-->
-        <input type="button" value="SaveSVG" id="saveasSVG" class="button--input" onclick="exportasSVG()"/>
+        <input type="button" value="SaveSVG" id="saveasSVG" class="button--input"/>
         <label id="saveasSVGButton" for="saveasSVG" title="save as SVG"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/savesvg.svg" alt="save SVG"/>
@@ -392,7 +396,7 @@
         <br>
 
         <!--CLEAR-->
-        <input type="button" value="Clear" id="clear" class="button--input" onclick="clearmodel()"/>
+        <input type="button" value="Clear" id="clear" class="button--input"/>
         <label id="clearButton" for="clear"
                class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button--label">
             <img class="button--image" src="img/icons/clear.svg" alt="clear"/>
