@@ -4,7 +4,7 @@ function attachid() {
 
 }
 
-function updateindex() {
+function updateindex() {    //TODO: not necessary?
     for (let i = 0; i < transitions.length; i++) {
         transitions[i].index = i;
     }
@@ -51,7 +51,7 @@ function doMouseMove(event, app) {
             var ny = source_hrany.y + dy * pomer;
             var start = Arc.zaciatok_hrany(source_hrany, koniech);
 
-            // TODO: make arrow pointing to cursor
+            // TODO: make arrow pointing on cursor
             hranabymove.polyciara.setAttributeNS(null, "points", start.x + "," + start.y + " " + nx + "," + ny);
 
             if (document.getElementById("inhibitorarc").checked || document.getElementById("readarc").checked) {

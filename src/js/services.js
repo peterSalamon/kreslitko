@@ -81,7 +81,7 @@ class ShortcutService {
         this._shortcuts = {};
 
         document.addEventListener("keypress", event => {
-            if (!app.context.shortcuts || event.key === "Alt" || event.key === "Control" || event.key === "Shift")
+            if (!app.context.shortcuts || event.key === "Alt" || event.key === "Control" || event.key === "Shift")  //todo: bind app here
                 return;
             const key = this._buildKeyCombination(event);
             if (this._shortcuts[key]) {

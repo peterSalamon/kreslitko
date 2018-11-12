@@ -90,3 +90,44 @@ function generujXML(format, objectStore) {
     xmltext = xmltext + "</document>";
     return xmltext;
 }
+
+function exportasXML(format, app) {
+    let objectStore = app.$store("model").get(0);     //TODO: ok ?
+
+    var textnazapis = generujXML(format, objectStore);
+    if (format === 1)
+        var menosuboru = prompt("Please enter the file name", menofilu);
+    if (format === 2)
+        var menosuboru = prompt("Please enter the file name", menofilu + ".pflow");
+
+    if (menosuboru != null) {
+        menofilu = menosuboru;
+        var xmlakoBlob = null;
+        if (window.Blob) {
+            xmlakoBlob = new Blob([textnazapis], {type: 'text/plain;charset=utf-8'});
+        }
+
+        if (xmlakoBlob != null) {
+            if (window.navigator.msSaveBlob !== undefined) {
+                window.navigator.msSaveBlob(xmlakoBlob, menofilu);
+            } else {
+                downloadLink = document.createElement("a");
+                downloadLink.download = menofilu;
+                downloadLink.innerHTML = "Download Model" + menofilu;
+                if (window.webkitURL !== undefined) {
+                    downloadLink.href = window.webkitURL.createObjectURL(xmlakoBlob);
+                }
+                else {
+                    if (window.URL.createObjectURL !== undefined) {
+                        downloadLink.href = window.URL.createObjectURL(xmlakoBlob);
+                        downloadLink.onclick = zavripokliku;
+                        downloadLink.style.display = "none";
+                        document.body.appendChild(downloadLink);
+                    }
+                }
+                downloadLink.click();
+            }
+            document.getElementById('menofilu').innerHTML = menofilu;       //TODO: element is null
+        }
+    }
+}
